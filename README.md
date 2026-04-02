@@ -1,66 +1,25 @@
-## Foundry
+# xstock-payback-vault
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A Solidity project built with [Foundry](https://book.getfoundry.sh/).
 
-Foundry consists of:
+## Contracts
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+### `PaybackMarketVault`
 
-## Documentation
+A vault that allows approved callers to buy tokenized assets (e.g. xStocks) using USDC at a fixed oracle price.
 
-https://book.getfoundry.sh/
+- **Owner** sets approved callers and assigns a price oracle per token.
+- **`buy(token, inputAmount)`** — transfers USDC from the caller to the owner and sends the corresponding token amount back to the caller, priced via the oracle.
+- **`recoverERC20(token)`** — lets the owner withdraw any ERC20 tokens held by the vault.
+
+### `IFixedPriceAdapter`
+
+Interface for a fixed-price oracle adapter. Returns a hardcoded price and its decimals, used by `PaybackMarketVault` to calculate token output amounts.
 
 ## Usage
 
-### Build
-
 ```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+forge build
+forge test
+forge fmt
 ```
